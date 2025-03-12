@@ -6,7 +6,6 @@ import { render } from 'solid-js/web';
 import App from './app';
 import { Router } from '@solidjs/router';
 import { routes } from './routes';
-import { remote } from '../package.json';
 
 const root = document.getElementById('root');
 
@@ -16,7 +15,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-globalThis.remote = remote;
+globalThis.remote = import.meta.env.VITE_REMOTE_URL;
 
 render(
   () => <Router root={(props) => <App>{props.children}</App>}>{routes}</Router>,
