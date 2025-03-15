@@ -1,8 +1,9 @@
 import { createEffect, createSignal } from "solid-js";
 import Box from "../components/Box";
-import { FaSolidArrowDown, FaSolidEnvelope, FaSolidPencil, FaSolidTurnDown } from "solid-icons/fa";
+import { FaSolidEnvelope, FaSolidPencil, FaSolidTurnDown } from "solid-icons/fa";
 import Disconnected from "../errors/disconnected";
 import { createBasicUser } from "../api/users";
+import Navbar from "../components/Navbar";
 
 function validateEmail(email: string): boolean {
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,6 +30,7 @@ export default function Home() {
     return (
         <>
             <Disconnected />
+            <Navbar />
             <div class="block min-h-[50vh] max-h-[90vh]">
                 <div class="justify-center items-center h-screen m-auto max-w-5xl grid lg:grid-cols-2 gap-4">
                     <div>
