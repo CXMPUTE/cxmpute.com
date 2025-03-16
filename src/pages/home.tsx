@@ -21,7 +21,7 @@ export default function Home() {
     return (
         <>
             <div class="min-h-[50vh] max-h-[90vh]">
-                <div class="justify-center items-center h-[70vh] m-auto max-w-5xl grid lg:grid-cols-2 gap-4">
+                <div class="justify-center items-center h-[60vh] m-auto max-w-5xl grid lg:grid-cols-2 gap-4">
                     <div>
                         <h3 class="font-mono text-4xl font-semibold text-white">
                             <FaSolidCode />

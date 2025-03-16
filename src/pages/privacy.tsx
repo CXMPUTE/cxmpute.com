@@ -1,5 +1,5 @@
 export default () => (
-    <div class={'w-full pt-24 flex justify-center items-center'}>
+    <div class={'w-full flex justify-center items-center'}>
         <div class={'max-w-7xl'}>
             <h1 id="privacy-policy-for-cxmpute">Privacy Policy for CXMPUTE</h1>
             <p><strong>Effective Date:</strong> 15 March 2025</p>

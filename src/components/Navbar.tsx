@@ -4,7 +4,7 @@ export default () => (
     <>
         <nav class="w-full bg-blue-900 bg-opacity-50 z-50">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
-                <a href="#" class="flex items-center space-x-2 rtl:space-x-reverse">
+                <a href={'/'} class="flex items-center space-x-2 rtl:space-x-reverse">
                     <img src="https://i.postimg.cc/zX0BVThh/Untitled-design-2.png" class="h-6 my-auto" alt="Flowbite Logo" />
                     <span class="self-center text-xl whitespace-nowrap dark:text-white font-extrabold mb-0.5">CXMPUTE</span>
                 </a>
@@ -21,7 +21,7 @@ export default () => (
             </div>
         </nav>
 
-        <nav class="w-full bg-gray-800 bg-opacity-50 z-40">
+        <nav class="w-full bg-gray-800 bg-opacity-50 z-50">
             <div class="max-w-screen-lg flex flex-wrap items-center justify-between mx-auto py-5 px-3">
                 <div class="w-full flex justify-between font-medium">
                     <ul class={'flex flex-col p-4 md:p-0 mt-4 md:space-x-12 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 font-semibold'}>
