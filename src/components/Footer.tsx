@@ -1,33 +1,26 @@
 export default () => (
-    <footer class={'bg-zinc-900'}>
+    <footer class={'bg-gray-900'}>
         <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
             <div class="md:flex md:justify-between">
                 <div class="mb-6 md:mb-0">
                     <a href="/" class="flex items-center">
                         <img src="https://i.postimg.cc/zX0BVThh/Untitled-design-2.png" class="h-8 me-3" />
-                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">CXMPUTE</span>
+                        <span class="self-center text-2xl whitespace-nowrap dark:text-white font-extrabold leading-none tracking-tight">CXMPUTE</span>
                     </a>
+                    <p class={'mt-2 text-gray-600 md:max-w-xl'}>We are a new, efficient, dynamic competitor in the space of web and cloud hosting looking to provide users with a next-level experience.</p>
                 </div>
-                <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+                <div class="grid grid-cols-2 gap-8 sm:gap-6">
                     <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href={'placeholder'}>Knowledgebase</a>
+                            <li>
+                                <a href={'/store'}>Store</a>
+                            </li>
+                            <li class={'my-4'}>
+                                <a href={'https://status.cxmpute.com'}>Status Page</a>
                             </li>
                             <li>
-                                <a href={'placeholder'}>Status Page</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
-                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li class="mb-4">
-                                <a href="https://github.com/cxmpute" class="hover:underline ">Github</a>
-                            </li>
-                            <li>
-                                <a href="https://discord.com/invite/cxmpute" class="hover:underline">Discord</a>
+                                <a href={'https://ctrl.cxmpute.com'}>CTRL Panel</a>
                             </li>
                         </ul>
                     </div>
@@ -35,10 +28,10 @@ export default () => (
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
                             <li class="mb-4">
-                                <a href="#" class="hover:underline">Privacy Policy</a>
+                                <a href={'/legal/privacy'} class="hover:underline">Privacy Policy</a>
                             </li>
                             <li>
-                                <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+                                <a href={'/legal/terms'} class="hover:underline">Terms &amp; Conditions</a>
                             </li>
                         </ul>
                     </div>
