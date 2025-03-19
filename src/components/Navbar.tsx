@@ -14,7 +14,7 @@ export default () => (
                             <A href={'https://ctrl.cxmpute.com'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Sign In</A>
                         </li>
                         <li>
-                            <a href={'mailto:hello@cxmpute.com'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Register</a>
+                            <a href={'https://ctrl.cxmpute.com/register'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Register</a>
                         </li>
                     </ul>
                 </div>

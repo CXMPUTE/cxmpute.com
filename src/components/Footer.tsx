@@ -8,6 +8,7 @@ export default () => (
                         <span class="self-center text-2xl whitespace-nowrap dark:text-white font-extrabold leading-none tracking-tight">CXMPUTE</span>
                     </a>
                     <p class={'mt-2 text-gray-600 md:max-w-xl'}>We are a new, efficient, dynamic competitor in the space of web and cloud hosting looking to provide users with a next-level experience.</p>
+                    <p class={'mt-2 text-gray-600 md:max-w-xl'}>CXMPUTE Limited is a company registered in England and Wales with company number 16322083</p>
                 </div>
                 <div class="grid grid-cols-2 gap-8 sm:gap-6">
                     <div>

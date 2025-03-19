@@ -1,7 +1,8 @@
 import { createSignal } from "solid-js";
 import Box from "../components/Box";
-import { FaSolidA, FaSolidArrowRight, FaSolidBookOpen, FaSolidCode, FaSolidEnvelope, FaSolidLock, FaSolidPencil, FaSolidTurnDown } from "solid-icons/fa";
-import Navbar from "../components/Navbar";
+import { FaSolidArrowRight, FaSolidBookOpen, FaSolidCode, FaSolidEnvelope, FaSolidLock, FaSolidPencil, FaSolidTurnDown } from "solid-icons/fa";
+import OnePng from '../assets/one.png';
+import SpeedTestSvg from '../assets/SpeedTest.svg';
 import { Button } from '../components/button';
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
     const [email, setEmail] = createSignal<string | undefined>('');
 
     const validateEmail = (emailTest: string) => {
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+€/;
 
         if (pattern.test(emailTest)) {
             setEmail(emailTest);
@@ -44,7 +45,7 @@ export default function Home() {
                                     {valid() && <div onClick={() => { setEmail(''); setValid(false) }} class="text-gray-400 absolute end-2.5 bottom-3.5 text-xs cursor-pointer hover:text-red-500 transition-colors duration-300"><FaSolidPencil /></div>}
                                 </div>
                             </div>
-                            <div class={`transition-all duration-300 overflow-hidden ${valid() ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <div class={`transition-all duration-300 overflow-hidden €{valid() ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
                                 {valid() && (
                                     <div>
                                         <p class={'font-sans text-green-600 text-xs italic mt-1'}>Welcome, {email()}!</p>
@@ -65,7 +66,7 @@ export default function Home() {
             </div>
             <div class={'grid place-items-center max-w-7xl m-auto mb-32'}>
 
-                <h1 class="text-5xl font-extrabold dark:text-white">Our Services<small class="ms-4 font-semibold text-gray-500 dark:text-gray-400">starting from <span class={'text-blue-500'}>$1.99/month</span> <FaSolidTurnDown class={'inline-flex'} /></small></h1>
+                <h1 class="text-5xl font-extrabold dark:text-white">Our Services<small class="ms-4 font-semibold text-gray-500 dark:text-gray-400">starting from <span class={'text-blue-500'}>€1.99/month</span> <FaSolidTurnDown class={'inline-flex'} /></small></h1>
                 <div class={'grid lg:grid-cols-3 gap-8 mt-12 w-full'}>
                     <Box>
                         <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">2025 sale</span>
@@ -80,7 +81,10 @@ export default function Home() {
                             to suit all needs. We have a wide catalog of games available to run, <span class={'font-bold'}>without any player or network limits.</span>
                         </p>
                         <div class={'absolute bottom-0 right-0 p-3'}>
-                            <Button>View Options <FaSolidArrowRight class={'ml-2'} /></Button>
+                            <Button onClick={() => {
+                                //@ts-expect-error this is fine
+                                window.location = '/minecraft';
+                            }}>From €1.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
                         </div>
                     </Box>
                     <Box hero>
@@ -92,11 +96,14 @@ export default function Home() {
                             </p>
                         </div>
                         <p class={'px-8 mb-8'}>
-                            CXMPUTE also offers Virtual Private Server (VPS) or Dedicated Server options for users who need more horsepower and configurability. Starting from $5/monthly,
+                            CXMPUTE also offers Virtual Private Server (VPS) or Dedicated Server options for users who need more horsepower and configurability. Starting from €5/monthly,
                             our VPS lines run on specialised Ryzen&trade; hardware for peak performance.
                         </p>
                         <div class={'absolute bottom-0 right-0 p-3'}>
-                            <Button>View Options <FaSolidArrowRight class={'ml-2'} /></Button>
+                            <Button onClick={() => {
+                                //@ts-expect-error this is fine
+                                window.location = '/vps';
+                            }}>From €4.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
                         </div>
                     </Box>
                     <Box>
@@ -108,7 +115,7 @@ export default function Home() {
                             </p>
                         </div>
                         <p class={'px-8 mb-8'}>
-                            Use our custom web hosting dashboard to configure domains, deploy sites and manage your files in one easy-to-use UI, custom-built for our services. Migrate your files over from your old provider with ease, and get set up from $2/month on our Value plans.
+                            Use our custom web hosting dashboard to configure domains, deploy sites and manage your files in one easy-to-use UI, custom-built for our services. Migrate your files over from your old provider with ease, and get set up from €2/month on our Value plans.
                         </p>
                         <div class={'absolute bottom-0 right-0 p-3'}>
                             <Button disabled>Launching 2025</Button>
@@ -122,9 +129,9 @@ export default function Home() {
                         <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">An <mark class="px-2 text-white bg-blue-500 rounded-lg shadow-xl">All-New</mark> Experience</h1>
                         <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">CXMPUTE uses an in-house management platform, <span class={'font-bold text-gray-300'}>CTRL</span>, to process orders, manage services and more. Our latest-generation platform supports a diverse range of applications - from VPS to gameservers, everything can be controlled in one neat, approachable UI.</p>
                     </div>
-                    <img src={'https://cdn.pterodactyl.io/site-assets/mockup-macbook-grey-1.0.png'} />
+                    <img src={OnePng} />
                     <hr class={'lg:col-span-3 my-16'} />
-                    <img src={'https://cdn.pterodactyl.io/site-assets/mockup-macbook-grey-1.0.png'} />
+                    <img src={SpeedTestSvg} width={256} height={256} class={'mx-auto'} />
                     <div class={'lg:col-span-2 my-auto'}>
                         <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Stellar Performance</h1>
                         <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Our cloud stack uses latest-generation chips from Intel&trade; and Ryzen&trade; along with NVMe SSD storage, Combahton DDoS Protection, 1gbps parallel networking and much more. Our Distributed Cloud Engine watches server performance in realtime and, if needed, can deploy extra "boost" cores and RAM to your servers in case of a spike in traffic. All free of charge, included in every plan.</p>
@@ -182,7 +189,7 @@ export default function Home() {
                                     <path d="M18.435 7.546A2.32 2.32 0 0 1 17.7 5.77a3.354 3.354 0 0 0-3.47-3.47 2.322 2.322 0 0 1-1.776-.736 3.357 3.357 0 0 0-4.907 0 2.281 2.281 0 0 1-1.776.736 3.414 3.414 0 0 0-2.489.981 3.372 3.372 0 0 0-.982 2.49 2.319 2.319 0 0 1-.736 1.775 3.36 3.36 0 0 0 0 4.908A2.317 2.317 0 0 1 2.3 14.23a3.356 3.356 0 0 0 3.47 3.47 2.318 2.318 0 0 1 1.777.737 3.36 3.36 0 0 0 4.907 0 2.36 2.36 0 0 1 1.776-.737 3.356 3.356 0 0 0 3.469-3.47 2.319 2.319 0 0 1 .736-1.775 3.359 3.359 0 0 0 0-4.908ZM8.5 5.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm3 9.063a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm2.207-6.856-6 6a1 1 0 0 1-1.414-1.414l6-6a1 1 0 0 1 1.414 1.414Z" />
                                 </svg>
                             </span>
-                            <span>For a limited time, get 10% off any service. Use code <code>SALE2025</code> at checkout.</span>
+                            <span>Our Standard and Performance VPS lines are now discounted. Offer ends 19 June.</span>
                         </p>
                     </div>
                     <div class="flex items-center">
