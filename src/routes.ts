@@ -5,6 +5,7 @@ import Home from './pages/home';
 import Terms from './pages/terms';
 import Privacy from './pages/privacy';
 import vps from './pages/vps/index';
+import compare from './pages/compare/index';
 
 export const routes: RouteDefinition[] = [
   {
@@ -22,6 +23,10 @@ export const routes: RouteDefinition[] = [
   {
     path: '/vps',
     component: vps,
+  },
+  {
+    path: '/compare',
+    component: compare,
   },
   {
     path: '**',

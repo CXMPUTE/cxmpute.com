@@ -10,13 +10,21 @@ export default () => (
                     <p class={'mt-2 text-gray-600 md:max-w-xl'}>We are a new, efficient, dynamic competitor in the space of web and cloud hosting looking to provide users with a next-level experience.</p>
                     <p class={'mt-2 text-gray-600 md:max-w-xl'}>CXMPUTE Limited is a company registered in England and Wales with company number 16322083</p>
                 </div>
-                <div class="grid grid-cols-2 gap-8 sm:gap-6">
+                <div class="grid grid-cols-3 gap-8 sm:gap-6">
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Services</h2>
+                        <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                            <li>
+                                <a href={'/vps'}>Virtual Private Servers</a>
+                            </li>
+                            <li class={'my-4'}>
+                                <a href={'/minecraft'}>Minecraft&trade; Servers</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div>
                         <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                         <ul class="text-gray-500 dark:text-gray-400 font-medium">
-                            <li>
-                                <a href={'/store'}>Store</a>
-                            </li>
                             <li class={'my-4'}>
                                 <a href={'https://status.cxmpute.com'}>Status Page</a>
                             </li>
