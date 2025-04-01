@@ -8,14 +8,14 @@ import { Button } from '../components/button';
 export default function Home() {
     const [valid, setValid] = createSignal<boolean>(false);
     const [banner, setBanner] = createSignal<boolean>(true);
-    const [email, setEmail] = createSignal<string | undefined>('');
 
-    const validateEmail = (emailTest: string) => {
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+€/;
+    const validateEmail = (e) => {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (pattern.test(emailTest)) {
-            setEmail(emailTest);
-            setValid(true);
+        if (e.keyCode === 13) {
+            if (pattern.test(e.currentTarget.value.toString())) {
+                setValid(true);
+            }
         }
     }
 
@@ -41,14 +41,14 @@ export default function Home() {
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                                         <FaSolidEnvelope class="w-4 h-4" style={{ color: valid() ? 'green' : 'gray' }} />
                                     </div>
-                                    <input type="text" onChange={(e) => validateEmail(e.currentTarget.value)} disabled={valid()} class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:text-gray-400" placeholder="user@cxmpute.com" />
-                                    {valid() && <div onClick={() => { setEmail(''); setValid(false) }} class="text-gray-400 absolute end-2.5 bottom-3.5 text-xs cursor-pointer hover:text-red-500 transition-colors duration-300"><FaSolidPencil /></div>}
+                                    <input type="text" onKeyDown={(e) => validateEmail(e)} disabled={valid()} class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:text-gray-400" placeholder="user@cxmpute.com" />
+                                    {valid() && <div onClick={() => { setValid(false) }} class="text-gray-400 absolute end-2.5 bottom-3.5 text-xs cursor-pointer hover:text-red-500 transition-colors duration-300"><FaSolidPencil /></div>}
                                 </div>
                             </div>
                             <div class={`transition-all duration-300 overflow-hidden €{valid() ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
                                 {valid() && (
                                     <div>
-                                        <p class={'font-sans text-green-600 text-xs italic mt-1'}>Welcome, {email()}!</p>
+                                        <p class={'font-sans text-green-600 text-xs italic mt-1'}>Welcome to CXMPUTE!</p>
                                         <div class={'grid grid-cols-2 gap-4 mt-3'}>
                                             <a href={'/vps'}>
                                                 <Button>VPS Servers</Button>
