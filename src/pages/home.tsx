@@ -31,7 +31,7 @@ export default function Home() {
                         <p class="text-gray-400 font-sans mt-1">CXMPUTE is an organisation which specialises in providing low-cost
                             solutions for hosting web applications with a global presence.</p>
                     </div>
-                    <Box>
+                    <Box className={'hidden lg:block'}>
                         <div class={'text-center my-8 transition-all duration-300'}>
                             <p class={'text-2xl font-semibold font-sans'}>
                                 Get started with <span class={'text-blue-400'}>CXMPUTE</span>
