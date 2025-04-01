@@ -1,7 +1,17 @@
-import { FaSolidArrowTurnDown, FaSolidBoltLightning, FaSolidCheck, FaSolidEthernet, FaSolidHardDrive, FaSolidLayerGroup, FaSolidMemory, FaSolidMicrochip, FaSolidShield } from 'solid-icons/fa';
+import { FaSolidArrowTurnDown, FaSolidArrowUpRightFromSquare, FaSolidBoltLightning, FaSolidEthernet, FaSolidHardDrive, FaSolidLayerGroup, FaSolidMemory, FaSolidMicrochip, FaSolidShield } from 'solid-icons/fa';
 import ServerSvg from '../../assets/Server.svg';
 import { Button } from '../../components/button';
 import Configure from './configure';
+import PricingBox, { Feature } from '../../components/PricingBox';
+import FeatureBox from '../../components/FeatureBox';
+
+const defaultFeatures: Feature[] = [
+    { feature: ' 99.5% SLA Uptime', isResource: false },
+    { feature: 'SmartMitigate™ Anti-DDoS', isResource: false },
+    { feature: 'Custom Control Panel', isResource: false },
+    { feature: 'Gigabit Parallel Network', isResource: false },
+    { feature: 'Automated System Backups', isResource: false },
+];
 
 export default () => {
     let target;
@@ -11,11 +21,6 @@ export default () => {
             target.scrollIntoView({ behavior: "smooth" });
         }
     };
-
-    const redirect = (url: string) => {
-        // @ts-expect-error this is fine
-        window.location = url;
-    }
 
     return (
         <div class={'max-w-7xl relative'}>
@@ -30,8 +35,8 @@ export default () => {
                             <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View our configuration options for the range of Virtual Private Servers that we offer. Once you&apos;re happy, move onto the basket to complete your purchase.</p>
                             <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
                                 <Button onClick={scrollToDiv}>Find Your VPS <FaSolidArrowTurnDown class={'ml-2'} /></Button>
-                                <a href="#" class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                    Learn more
+                                <a href="https://ctrl.cxmpute.com" target={'_blank'} class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    Dashboard <FaSolidArrowUpRightFromSquare class={'inline-flex w-3 h-3 ml-1'} />
                                 </a>
                             </div>
                         </div>
@@ -41,159 +46,127 @@ export default () => {
                 </div>
             </div>
             <div class={'grid lg:grid-cols-3 gap-6 mt-12 justify-center max-w-screen-xl'}>
-                <div class={'bg-blue-950/50 p-6 rounded-lg shadow-xl text-gray-400'}>
-                    <p class={'font-bold text-xl text-white mb-4'}>
-                        <FaSolidBoltLightning class={'mr-2 inline-flex text-blue-500'} />
-                        Instant Deployment
-                    </p>
+                <FeatureBox icon={FaSolidBoltLightning} title={'Instant Deployment'}>
                     With CXMPUTE, you don&apos;t have to wait for manual approval until your server
                     is deployed to our systems. Within 30 seconds of placing your order, the service
                     is made available and added to your CTRL account for easy interaction.
-                </div>
-                <div class={'bg-blue-950/50 p-6 rounded-lg shadow-xl text-gray-400'}>
-                    <p class={'font-bold text-xl text-white mb-4'}>
-                        <FaSolidShield class={'mr-2 inline-flex text-blue-500'} />
-                        Advanced DDoS Protection
-                    </p>
+                </FeatureBox>
+                <FeatureBox icon={FaSolidShield} title={'Advanced DDoS Protection'}>
                     We include professional-grade DDoS protection with every plan, provided via SmartMitigate&trade;,
                     in order to keep your services running smoothly even under an attack. DDoS protection can also be
                     controlled via the CTRL Dashboard.
-                </div>
-                <div class={'bg-blue-950/50 p-6 rounded-lg shadow-xl text-gray-400'}>
-                    <p class={'font-bold text-xl text-white mb-4'}>
-                        <FaSolidLayerGroup class={'mr-2 inline-flex text-blue-500'} />
-                        Reliable Performance
-                    </p>
+                </FeatureBox>
+                <FeatureBox icon={FaSolidLayerGroup} title={'Reliable Performance'}>
                     Our base KVM VPS offers use Intel&copy; Xeon&trade;-type CPUs for general purpose, with DDR4 memory
-                    and NVMe SATA SSDs by default for additional performance. All servers also come with a parallel gigabit network connection to improve latency.
-                </div>
+                    and NVMe SATA SSDs by default for additional performance. All servers also come with a parallel
+                    gigabit network connection to improve latency.
+                </FeatureBox>
             </div>
 
             <div class={'mt-32'}>
                 <p class={'text-5xl font-extrabold'}>Our Best Offers</p>
                 <p class={'text-xl text-gray-500 mb-8 mt-1'}>Choose between our best value options, starting at €4.99/month.</p>
                 <div class={'grid lg:grid-cols-3 gap-8 mt-8'}>
-                    <div class={'relative text-white font-semibold text-lg bg-black/25 p-4 lg:p-12 rounded-lg shadow-xl'}>
-                        <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Starter Plan</span>
-
-                        <h1 class={'text-xl lg:text-4xl font-bold'}>Standard</h1>
-                        <h1 class={'text-xl lg:text-2xl font-bold text-gray-300'}>6GB RAM</h1>
-                        <div class={'text-gray-400 mt-4'}>
-                            <p class={'mb-1'}>
-                                <FaSolidMicrochip class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>1 vCore</span> on Standard CPU
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidMemory class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>6GB</span> DDR4 ECC memory
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidHardDrive class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>40GB</span> SATA SSD Storage
-                            </p>
-                            <p>
-                                <FaSolidEthernet class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>5TB</span> DDoS-protected Traffic
-                            </p>
-                            <hr class={'my-6'} />
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 99.5% SLA Uptime
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> SmartMitigate&trade; Anti-DDoS
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Custom Control Panel
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 1000mbps Parallel Network
-                            </p>
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Automated System Backups
-                            </p>
-                        </div>
-                        <h1 class={'text-xl lg:text-3xl font-bold mt-4 lg:mt-8'}>€4.99/month</h1>
-                        <p class={'italic text-gray-400 text-sm font-normal'}>30-day payment. Cancel anytime, no fees, no contract.</p>
-                        <div class={'text-right mt-4'}>
-                            <Button onClick={() => redirect('https://ctrl.cxmpute.com/order/config/2/d335c229-d744-470b-a18a-3ae4d252d761')}>Order Now</Button>
-                        </div>
-                    </div>
-                    <div class={'relative text-white font-semibold text-lg bg-blue-950 bg-opacity-[7.5%] p-4 lg:p-12 rounded-lg shadow-xl'}>
-                        <span class="bg-yellow-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-yellow-900 dark:text-yellow-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Best Value</span>
-                        <h1 class={'text-xl lg:text-4xl font-bold'}>Standard</h1>
-                        <h1 class={'text-xl lg:text-2xl font-bold text-gray-300'}>12GB RAM</h1>
-                        <div class={'text-gray-400 mt-4'}>
-                            <p class={'mb-1'}>
-                                <FaSolidMicrochip class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>4 vCores</span> on Standard CPU
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidMemory class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>12GB</span> DDR4 ECC memory
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidHardDrive class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>100GB</span> SATA SSD Storage
-                            </p>
-                            <p>
-                                <FaSolidEthernet class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>15TB</span> DDoS-protected Traffic
-                            </p>
-                            <hr class={'my-6'} />
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 99.5% SLA Uptime
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> SmartMitigate&trade; Anti-DDoS
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Custom Control Panel
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 1000mbps Parallel Network
-                            </p>
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Automated System Backups
-                            </p>
-                        </div>
-                        <h1 class={'text-xl lg:text-3xl font-bold mt-4 lg:mt-8'}>€7.99/month</h1>
-                        <p class={'italic text-gray-400 text-sm font-normal'}>30-day payment. Cancel anytime, no fees, no contract.</p>
-                        <div class={'text-right mt-4'}>
-                            <Button onClick={() => redirect('https://ctrl.cxmpute.com/order/config/2/3a936659-a8c0-4782-b30f-fc001adbf2cc')}>Order Now</Button>
-                        </div>
-                    </div>
-                    <div class={'relative text-white font-semibold text-lg bg-blue-950/25 p-4 lg:p-12 rounded-lg shadow-xl border-2 border-blue-500'}>
-                        <span class="bg-red-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-red-900 dark:text-red-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Best Power</span>
-                        <h1 class={'text-xl lg:text-4xl font-bold'}>Performance <FaSolidBoltLightning class={'text-yellow-500 inline-flex '} /></h1>
-                        <h1 class={'text-xl lg:text-2xl font-bold text-gray-300'}>12GB RAM</h1>
-                        <div class={'text-gray-400 mt-4'}>
-                            <p class={'mb-1'}>
-                                <FaSolidMicrochip class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>4 vCores</span> on Performance CPU
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidMemory class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>12GB</span> DDR4 ECC memory
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidHardDrive class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>100GB</span> NVMe SSD Storage
-                            </p>
-                            <p>
-                                <FaSolidEthernet class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>15TB</span> DDoS-protected Traffic
-                            </p>
-                            <hr class={'my-6'} />
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 99.5% SLA Uptime
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> SmartMitigate&trade; Anti-DDoS
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Custom Control Panel
-                            </p>
-                            <p class={'my-1'}>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 1000mbps Parallel Network
-                            </p>
-                            <p>
-                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Automated System Backups
-                            </p>
-                        </div>
-                        <h1 class={'text-xl lg:text-3xl font-bold mt-4 lg:mt-8'}>€13.99/month</h1>
-                        <p class={'italic text-gray-400 text-sm font-normal'}>30-day payment. Cancel anytime, no fees, no contract.</p>
-                        <div class={'text-right mt-4'}>
-                            <Button onClick={() => redirect('https://ctrl.cxmpute.com/order/config/2/18a93927-7fa2-4e2c-bbbe-74bf709db436')}>Order Now</Button>
-                        </div>
-                    </div>
+                    <PricingBox
+                        title={'Standard'}
+                        subtitle={'6GB RAM'}
+                        price={4.99}
+                        url={'https://ctrl.cxmpute.com/order/config/2/d335c229-d744-470b-a18a-3ae4d252d761'}
+                        features={[
+                            {
+                                icon: FaSolidMicrochip,
+                                feature: '1 vCore',
+                                description: 'on standard CPU',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidMemory,
+                                feature: '6GB',
+                                description: 'DDR4 ECC Memory',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidHardDrive,
+                                feature: '40GB',
+                                description: 'NVMe SSD Storage',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidEthernet,
+                                feature: '5TB',
+                                description: 'DDoS-protected Traffic',
+                                isResource: true,
+                            },
+                            ...defaultFeatures
+                        ]} />
+                    <PricingBox
+                        title={'Standard'}
+                        subtitle={'12GB RAM'}
+                        price={7.99}
+                        backgroundColor={'bg-blue-950/10'}
+                        url={'https://ctrl.cxmpute.com/order/config/2/3a936659-a8c0-4782-b30f-fc001adbf2cc'}
+                        features={[
+                            {
+                                icon: FaSolidMicrochip,
+                                feature: '4 vCores',
+                                description: 'on standard CPU',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidMemory,
+                                feature: '12GB',
+                                description: 'DDR4 ECC Memory',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidHardDrive,
+                                feature: '100GB',
+                                description: 'NVMe SSD Storage',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidEthernet,
+                                feature: '15TB',
+                                description: 'DDoS-protected Traffic',
+                                isResource: true,
+                            },
+                            ...defaultFeatures
+                        ]} />
+                    <PricingBox
+                        title={'Performance'}
+                        isPerformance
+                        isHighlighted
+                        subtitle={'12GB RAM'}
+                        price={13.99}
+                        backgroundColor={'bg-blue-950/25'}
+                        url={'https://ctrl.cxmpute.com/order/config/2/18a93927-7fa2-4e2c-bbbe-74bf709db436'}
+                        features={[
+                            {
+                                icon: FaSolidMicrochip,
+                                feature: '4 vCores',
+                                description: 'on Performance CPU',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidMemory,
+                                feature: '12GB',
+                                description: 'DDR4 ECC Memory',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidHardDrive,
+                                feature: '100GB',
+                                description: 'NVMe SSD Storage',
+                                isResource: true,
+                            },
+                            {
+                                icon: FaSolidEthernet,
+                                feature: '15TB',
+                                description: 'DDoS-protected Traffic',
+                                isResource: true,
+                            },
+                            ...defaultFeatures
+                        ]} />
                 </div>
             </div>
 

@@ -109,6 +109,23 @@ export default () => (
                 </tr>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        DDoS Protection
+                    </th>
+                    <td class="px-6 py-4 text-white">
+                        <FaSolidCheck />
+                    </td>
+                    <td class="px-6 py-4">
+                        <FaSolidX />
+                    </td>
+                    <td class="px-6 py-4 text-white">
+                        <FaSolidCheck />
+                    </td>
+                    <td class="px-6 py-4">
+                        <FaSolidX />
+                    </td>
+                </tr>
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         Monthly Cost
                     </th>
                     <td class="px-6 py-4 text-white">
