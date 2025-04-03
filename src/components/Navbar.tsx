@@ -11,7 +11,13 @@ export default () => (
                 <div class="hidden w-full md:block md:w-auto">
                     <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
                         <li>
-                            <A href={'https://ctrl.cxmpute.com'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Sign In</A>
+                            <a href={'https://discord.gg/5RqBxMqHTP'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Discord</a>
+                        </li>
+                        <li>
+                            <span class={'text-gray-400'}>&bull;</span>
+                        </li>
+                        <li>
+                            <a href={'https://ctrl.cxmpute.com'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Sign In</a>
                         </li>
                         <li>
                             <a href={'https://ctrl.cxmpute.com/register'} class="block py-2 px-3 text-gray-400 rounded-sm md:bg-transparent md:p-0" aria-current="page">Register</a>

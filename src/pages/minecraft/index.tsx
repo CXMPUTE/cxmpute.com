@@ -12,6 +12,8 @@ export const defaultFeatures: Feature[] = [
     { feature: ' 99.5% SLA Uptime', isResource: false },
     { feature: 'Custom Control Panel', isResource: false },
     { feature: 'Unlimited Player Slots', isResource: false },
+    { feature: 'No CPU limits*', isResource: false },
+    { feature: 'No SSD limits**', isResource: false },
 ];
 
 export default () => {
@@ -110,6 +112,12 @@ export default () => {
                     <img src={'https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Bastion_Remnant_4.png'} class={'hidden lg:block'} />
                 </div>
             </div>
+            <p class={'text-gray-400 italic'}>
+                * While the CPU assigned to your server has no limit, it is restricted by the performance capacity of the host server.
+            </p>
+            <p class={'text-gray-400 italic'}>
+                ** We do offer unmetered SSD storage, however all servers come with a soft limit of 20GB by default. You must ask our support team to increase this once the server has been deployed if you require more. All files must be related to Minecraft&trade; server hosting, and anyone who abuses this feature we offer may have their services cancelled.
+            </p>
         </div>
     )
 }
