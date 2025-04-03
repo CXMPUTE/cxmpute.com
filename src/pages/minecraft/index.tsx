@@ -100,15 +100,15 @@ export default () => {
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 my-8">
                 <div class={'grid lg:grid-cols-5'}>
-                        <div class={'col-span-4'}>
-                            <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">More than 20+ concurrent players?</h1>
-                            <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Get in touch with our specialist team who can make a custom plan to suit your needs.</p>
-                            <a href={'mailto:custom@cxmpute.com'}>
-                                <Button>Contact Us <FaSolidArrowRight class={'ml-2'} /></Button>
-                            </a>
-                        </div>
-                        <img src={'https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Bastion_Remnant_4.png'} class={'hidden lg:block'} />
-                        </div>
+                    <div class={'col-span-4'}>
+                        <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">More than 20+ concurrent players?</h1>
+                        <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Get in touch with our specialist team who can make a custom plan to suit your needs.</p>
+                        <a href={'mailto:custom@cxmpute.com'}>
+                            <Button>Contact Us <FaSolidArrowRight class={'ml-2'} /></Button>
+                        </a>
+                    </div>
+                    <img src={'https://static.wikia.nocookie.net/minecraft_gamepedia/images/9/9a/Bastion_Remnant_4.png'} class={'hidden lg:block'} />
+                </div>
             </div>
         </div>
     )

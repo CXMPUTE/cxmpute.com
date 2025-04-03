@@ -32,7 +32,7 @@ export default () => (
                             <A href={'/minecraft'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Minecraft&trade; Servers</A>
                         </li>
                         <li>
-                            <A href={'/features'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Features</A>
+                            <A href={'/dedicated'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Dedicated Servers</A>
                         </li>
                         <li>
                             <A href={'/comparison'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Compare Us</A>
