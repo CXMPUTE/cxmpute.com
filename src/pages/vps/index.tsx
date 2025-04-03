@@ -24,7 +24,7 @@ export default () => {
 
     return (
         <div class={'max-w-7xl relative'}>
-            <h1 class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-[400px] z-0 font-bold opacity-[5%] select-none">
+            <h1 class="hidden xl:block absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-[400px] z-0 font-bold opacity-[5%] select-none">
                 VPS
             </h1>
             <div class={'z-10'}>

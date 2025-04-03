@@ -59,7 +59,7 @@ export default () => {
             <div class={'bg-black/50 p-6 rounded-lg shadow-xl mt-8'}>
                 {options().stage === 1 && (
                     <>
-                        <div class={'grid grid-cols-4 gap-8'}>
+                        <div class={'grid lg:grid-cols-4 gap-8'}>
                             <div class={classNames(options().location === 'uk' && 'border-2 border-blue-200', 'p-4 bg-gray-800 rounded-lg shadow-xl opacity-50')}>
                                 <div class={'grid grid-cols-3 gap-4'}>
                                     <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/255px-Flag_of_the_United_Kingdom_%281-2%29.svg.png'} width={64} class={'rounded my-auto'} />
@@ -104,7 +104,7 @@ export default () => {
                 )}
                 {options().stage == 2 && (
                     <>
-                        <div class={'grid grid-cols-2 gap-8'}>
+                        <div class={'grid lg:grid-cols-2 gap-8'}>
                             <div class={classNames(options().tier === 'standard' && 'border-2 border-blue-200', 'relative p-4 bg-gray-800 rounded-lg shadow-xl')} onClick={() => setOptions((current) => ({ ...current, tier: 'standard' }))}>
                                 <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Best Value</span>
                                 <div class={'grid grid-cols-3 gap-4'}>

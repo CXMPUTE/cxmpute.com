@@ -6,7 +6,7 @@ export default () => {
     const options = dedicatedData;
 
     return (
-        <div class={'max-w-7xl z-20'}>
+        <div class={'max-w-sm lg:max-w-7xl'}>
             <div class={'grid lg:grid-cols-3 gap-8 w-full place-items-center'}>
                 <div class={'text-left w-full z-20 col-span-2'}>
                     <div class="py-8 px-4 mx-auto lg:py-16">
@@ -20,7 +20,7 @@ export default () => {
             </div>
 
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

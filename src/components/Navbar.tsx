@@ -22,25 +22,27 @@ export default () => (
         </nav>
 
         <nav class="w-full bg-gray-800 bg-opacity-50 z-50">
-            <div class="max-w-screen-lg flex flex-wrap items-center justify-between mx-auto py-5 px-3">
-                <div class="w-full flex justify-between font-medium">
-                    <ul class={'flex mt-4 space-x-12 flex-row md:mt-0 md:border-0 font-semibold overflow-x-auto'}>
-                        <li>
-                            <A href={'/vps'} class="block line-clamp-1 text-white rounded-sm md:bg-transparent" aria-current="page">VPS Hosting</A>
+            <div class="max-w-screen-lg flex items-center justify-between mx-auto py-5 px-3">
+                <div class="w-full font-medium">
+                    <ul class="w-full flex mt-4 flex-row md:mt-0 font-semibold overflow-x-auto">
+                        <li class={'mr-12'}>
+                            <A href="/vps">VPS <span class={'hidden lg:inline-flex'}>Hosting</span></A>
+                        </li>
+                        <li class={'mr-12'}>
+                            <A href="/minecraft">Minecraft™ <span class={'hidden lg:inline-flex'}>Servers</span></A>
+                        </li>
+                        <li class={'mr-12'}>
+                            <A href="/dedicated">Dedicated <span class={'hidden lg:inline-flex'}>Servers</span></A>
                         </li>
                         <li>
-                            <A href={'/minecraft'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Minecraft&trade; Servers</A>
+                            <A href="/compare">Compare <span class={'hidden lg:inline-flex'}>Us</span></A>
                         </li>
-                        <li>
-                            <A href={'/dedicated'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Dedicated Servers</A>
-                        </li>
-                        <li>
-                            <A href={'/comparison'} class="block py-2 px-3 text-white rounded-sm md:bg-transparent md:p-0" aria-current="page">Compare Us</A>
+                        <li class={'ml-auto'}>
+                            <iframe src="https://status.cxmpute.com/badge?theme=dark" width="250" height="30" class="opacity-50 hidden md:block"></iframe>
                         </li>
                     </ul>
-                    <iframe src="https://status.cxmpute.com/badge?theme=dark" width="250" height="30" class={'opacity-50 hidden md:block'}></iframe>
-                    </div>
                 </div>
+            </div>
         </nav>
     </>
 );
