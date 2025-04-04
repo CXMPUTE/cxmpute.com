@@ -1,7 +1,7 @@
 import PricingBox from "../../components/PricingBox"
 import { defaultFeatures } from ".";
 import plans from '../../../data/minecraft.data';
-import { FaSolidBoxArchive, FaSolidEthernet, FaSolidMemory } from "solid-icons/fa";
+import { FaSolidBoxArchive, FaSolidEthernet, FaSolidMemory, FaSolidMicrochip } from "solid-icons/fa";
 
 export default () => (
     <div class={'grid lg:grid-cols-3 gap-8 mt-6'}>
@@ -15,6 +15,12 @@ export default () => (
                 icon={plan.icon}
                 isHighlighted={plan.featured}
                 features={[
+                    {
+                        icon: FaSolidMicrochip,
+                        feature: '3.9GHz',
+                        description: 'Intel® Xeon CPU',
+                        isResource: true,
+                    },
                     {
                         icon: FaSolidMemory,
                         feature: `${plan.memory}GB`,

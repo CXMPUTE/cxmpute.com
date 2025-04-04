@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FaSolidBoxArchive, FaSolidCircleQuestion, FaSolidCircleXmark, FaSolidEthernet, FaSolidMemory, FaSolidPuzzlePiece, FaSolidUser, FaSolidUserGroup, FaSolidUserPlus, FaSolidUsers } from "solid-icons/fa";
+import { FaSolidBoxArchive, FaSolidCircleQuestion, FaSolidCircleXmark, FaSolidEthernet, FaSolidMemory, FaSolidMicrochip, FaSolidPuzzlePiece, FaSolidUser, FaSolidUserGroup, FaSolidUserPlus, FaSolidUsers } from "solid-icons/fa";
 import { createSignal } from "solid-js";
 import getPlans, { MinecraftOptions } from '../../../data/minecraft.data';
 import PricingBox from "../../components/PricingBox";
@@ -221,6 +221,12 @@ export default () => {
                                 icon={plan.icon}
                                 isHighlighted={plan.featured}
                                 features={[
+                                    {
+                                        icon: FaSolidMicrochip,
+                                        feature: '3.9GHz',
+                                        description: 'Intel® Xeon CPU',
+                                        isResource: true,
+                                    },
                                     {
                                         icon: FaSolidMemory,
                                         feature: `${plan.memory}GB`,
