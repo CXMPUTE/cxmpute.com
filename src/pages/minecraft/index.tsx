@@ -37,7 +37,7 @@ export default () => {
                         <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">View our configuration options for the range of Minecraft&trade; Servers that we offer. Once you&apos;re happy, move onto the basket to complete your purchase.</p>
                         <div>
                             <Button onClick={scrollToDiv}>View Plans<FaSolidArrowTurnDown class={'ml-2'} /></Button>
-                            <a href="https://game.cxmpute.com" target={'_blank'} class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            <a href="https://game.cxmpute.com/auth/register" target={'_blank'} class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                 Dashboard <FaSolidArrowUpRightFromSquare class={'inline-flex w-3 h-3 ml-1'} />
                             </a>
                         </div>

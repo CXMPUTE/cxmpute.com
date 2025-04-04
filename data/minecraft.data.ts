@@ -19,7 +19,7 @@ export default <MinecraftOptions[]>[
         backups: 1,
         price: 1.99,
         isDiscounted: 2.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
     },
     {
         id: 2,
@@ -29,7 +29,7 @@ export default <MinecraftOptions[]>[
         backups: 2,
         price: 3.99,
         isDiscounted: 5.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
         featured: true,
     },
     {
@@ -40,7 +40,7 @@ export default <MinecraftOptions[]>[
         backups: 3,
         price: 5.99,
         isDiscounted: 8.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
     },
     {
         id: 4,
@@ -50,7 +50,7 @@ export default <MinecraftOptions[]>[
         backups: 4,
         price: 7.99,
         isDiscounted: 11.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
     },
     {
         id: 5,
@@ -60,7 +60,7 @@ export default <MinecraftOptions[]>[
         backups: 5,
         price: 9.99,
         isDiscounted: 14.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
     },
     {
         id: 6,
@@ -70,7 +70,7 @@ export default <MinecraftOptions[]>[
         backups: 5,
         price: 11.99,
         isDiscounted: 17.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
         featured: true,
     },
     {
@@ -81,7 +81,7 @@ export default <MinecraftOptions[]>[
         backups: 6,
         price: 13.99,
         isDiscounted: 20.99,
-        link: 'https://game.cxmpute.com',
+        link: 'https://game.cxmpute.com/auth/register',
         featured: true,
     },
 ];
