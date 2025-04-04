@@ -82,10 +82,9 @@ export default function Home() {
                             to suit all needs. We have a wide catalog of games available to run, <span class={'font-bold'}>without any player or network limits.</span>
                         </p>
                         <div class={'absolute bottom-0 right-0 p-3'}>
-                            <Button onClick={() => {
-                                //@ts-expect-error this is fine
-                                window.location = '/minecraft';
-                            }}>From €1.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
+                            <A href={'/minecraft'}>
+                                <Button>From €1.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
+                            </A>
                         </div>
                     </Box>
                     <Box hero>
@@ -101,10 +100,9 @@ export default function Home() {
                             our VPS lines run on specialised Ryzen&trade; hardware for peak performance.
                         </p>
                         <div class={'absolute bottom-0 right-0 p-3'}>
-                            <Button onClick={() => {
-                                //@ts-expect-error this is fine
-                                window.location = '/vps';
-                            }}>From €4.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
+                            <A href={'/vps'}>
+                                <Button>From €4.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
+                            </A>
                         </div>
                     </Box>
                     <Box>
