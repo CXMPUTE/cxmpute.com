@@ -1,6 +1,7 @@
-import { FaSolidArrowRight } from "solid-icons/fa";
+import { FaSolidArrowRight, FaSolidBuildingUser, FaSolidComputerMouse, FaSolidDeleteLeft, FaSolidDesktop, FaSolidDollarSign, FaSolidMicrochip, FaSolidRecycle, FaSolidTriangleExclamation, FaSolidUserPlus } from "solid-icons/fa";
 import dedicatedData from "../../../data/dedicated.data";
 import { Button } from "../../components/button";
+import FeatureBox from "../../components/FeatureBox";
 
 export default () => {
     const options = dedicatedData;
@@ -97,6 +98,20 @@ export default () => {
                 </table>
                 <p class={'text-gray-500 mt-1 italic'}>Dedicated server orders must be processed through a support ticket on our control panel, CTRL.</p>
             </div>
+            <div class={'grid lg:grid-cols-3 gap-6 mt-12 justify-center max-w-screen-xl'}>
+                            <FeatureBox icon={FaSolidDollarSign} title={'No Setup Fees'}>
+                                Unlike the majority of other providers, we don&apos;t charge ANY setup or one-time fees once you purchase a
+                                dedicated server from our network.
+                            </FeatureBox>
+                            <FeatureBox icon={FaSolidDeleteLeft} title={'Cancel anytime at no cost'}>
+                                No need for the dedicated server anymore? Not a problem. With CXMPUTE, there are no contracts, no commitment
+                                and no cancellation fees.
+                            </FeatureBox>
+                            <FeatureBox icon={FaSolidMicrochip} title={'Raw Performance'}>
+                                Our dedicated servers offer faster speeds compared to VPS, ideal for heavier workloads requiring more
+                                compute (excuse the pun).
+                            </FeatureBox>
+                        </div>
             <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 my-8">
                 <div class={'grid lg:grid-cols-5'}>
                     <div class={'col-span-4'}>
