@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    background-color: #020811;
+    color: #e2e8f0;
+    font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100%;
+    background-image: radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.12), transparent 28%), radial-gradient(circle at 85% 0%, rgba(59, 130, 246, 0.1), transparent 28%), linear-gradient(180deg, #02060e 0%, #08101c 100%);
+  }
+
+  ::selection {
+    background: rgba(56, 189, 248, 0.35);
+    color: #f8fafc;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply rounded-3xl border border-slate-700/60 bg-slate-950/75 shadow-[0_30px_75px_rgba(15,23,42,0.55)] backdrop-blur-xl;
+  }
+
+  .glass-panel {
+    @apply rounded-3xl border border-slate-700/50 bg-slate-900/70 shadow-[0_20px_50px_rgba(15,23,42,0.45)] backdrop-blur-xl;
+  }
+
+  .accent-ring {
+    @apply absolute inset-0 rounded-full bg-gradient-to-r from-sky-500/30 via-cyan-400/10 to-purple-500/10 blur-3xl opacity-70 pointer-events-none;
+  }
+
+  .button-frost {
+    @apply rounded-full bg-gradient-to-r from-cyan-400 via-sky-500 to-indigo-500 text-slate-950 font-semibold shadow-lg shadow-cyan-500/15 border border-white/10 transition-all duration-200;
+  }
+
+  .button-frost.secondary {
+    @apply bg-slate-800/90 text-slate-100 border border-slate-600/60 hover:bg-slate-700/90 hover:text-white;
+  }
+
+  .button-frost.disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+}

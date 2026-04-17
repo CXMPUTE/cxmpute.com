@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, type KeyboardEvent } from "solid-js";
 import Box from "../components/Box";
 import { FaSolidArrowRight, FaSolidBookOpen, FaSolidCode, FaSolidEnvelope, FaSolidLock, FaSolidPencil, FaSolidTurnDown } from "solid-icons/fa";
 import OnePng from '../assets/one.png';
@@ -7,191 +7,194 @@ import { Button } from '../components/button';
 import { A } from "@solidjs/router";
 
 export default function Home() {
-    const [valid, setValid] = createSignal<boolean>(false);
-    const [banner, setBanner] = createSignal<boolean>(true);
+    const [valid, setValid] = createSignal(false);
+    const [banner, setBanner] = createSignal(true);
 
-    const validateEmail = (e) => {
+    const validateEmail = (e: KeyboardEvent<HTMLInputElement>) => {
         const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (e.keyCode === 13) {
-            if (pattern.test(e.currentTarget.value.toString())) {
-                setValid(true);
-            }
+        if (e.key === 'Enter' && pattern.test(e.currentTarget.value)) {
+            setValid(true);
         }
-    }
+    };
 
     return (
         <>
-            <div class="min-h-[50vh] max-h-[90vh]">
-                <div class="justify-center items-center h-[60vh] m-auto max-w-5xl grid lg:grid-cols-2 gap-4">
-                    <div>
-                        <h3 class="font-mono text-4xl font-semibold text-white">
-                            <FaSolidCode />
-                            cloud infrastructure for the <span
-                                class="text-blue-500">modern world</span></h3>
-                        <p class="text-gray-400 font-sans mt-1">CXMPUTE is an organisation which specialises in providing low-cost
-                            solutions for hosting web applications with a global presence.</p>
+            <section class="relative overflow-hidden rounded-[2rem] border border-slate-800/70 bg-slate-900/80 p-8 shadow-[0_40px_120px_-60px_rgba(14,165,233,0.45)] mt-10">
+                <div class="absolute inset-0 opacity-30">
+                    <div class="absolute left-0 top-0 h-40 w-40 rounded-full bg-cyan-500/20 blur-3xl" />
+                    <div class="absolute right-0 top-20 h-44 w-44 rounded-full bg-violet-500/15 blur-3xl" />
+                </div>
+                <div class="relative grid gap-10 lg:grid-cols-[1.3fr_0.9fr] items-center">
+                    <div class="space-y-8">
+                        <div class="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-xs uppercase tracking-[0.3em] text-cyan-300">New</div>
+                        <div class="space-y-5">
+                            <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">Future-ready cloud infrastructure, designed for modern teams.</h1>
+                            <p class="max-w-xl text-lg leading-8 text-slate-300">CXMPUTE delivers elegant hosting, secure control, and transparent pricing for developers, gamers, and businesses who want performance without noise.</p>
+                        </div>
+                        <div class="grid gap-4 sm:grid-cols-3">
+                            <div class="glass-panel p-4 text-slate-200">
+                                <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Latency</p>
+                                <p class="mt-3 text-3xl font-semibold text-white">12ms</p>
+                            </div>
+                            <div class="glass-panel p-4 text-slate-200">
+                                <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Network</p>
+                                <p class="mt-3 text-3xl font-semibold text-white">1Gbps</p>
+                            </div>
+                            <div class="glass-panel p-4 text-slate-200">
+                                <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Uptime</p>
+                                <p class="mt-3 text-3xl font-semibold text-white">99.99%</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-4 sm:flex-row">
+                            <A href="/vps" class="button-frost inline-flex items-center justify-center px-6 py-3">Explore VPS <FaSolidArrowRight class="ml-2" /></A>
+                            <A href="/compare" class="button-frost secondary inline-flex items-center justify-center px-6 py-3">Compare plans</A>
+                        </div>
                     </div>
-                    <Box className={'hidden lg:block'}>
-                        <div class={'text-center my-8 transition-all duration-300'}>
-                            <p class={'text-2xl font-semibold font-sans'}>
-                                Get started with <span class={'text-blue-400'}>CXMPUTE</span>
-                            </p>
-                            <div class="flex justify-center mt-6">
-                                <div class={'relative w-2/3'}>
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                        <FaSolidEnvelope class="w-4 h-4" style={{ color: valid() ? 'green' : 'gray' }} />
+
+                    <Box className="p-8">
+                        <div class="space-y-6 text-slate-200">
+                            <div class="flex items-center justify-between rounded-3xl border border-slate-700/80 bg-slate-950/80 p-4">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Start with your email</p>
+                                    <p class="mt-2 text-sm text-slate-300">Secure onboarding in a few seconds.</p>
+                                </div>
+                                <FaSolidEnvelope class="h-5 w-5 text-cyan-400" />
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-xs uppercase tracking-[0.28em] text-slate-500">work email</label>
+                                    <div class="relative mt-3">
+                                        <FaSolidEnvelope class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                                        <input
+                                            type="email"
+                                            onKeyDown={validateEmail}
+                                            disabled={valid()}
+                                            placeholder="user@cxmpute.com"
+                                            class="w-full rounded-3xl border border-slate-700/80 bg-slate-950/90 py-4 pl-12 pr-4 text-slate-100 transition focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-70"
+                                        />
+                                        {valid() && (
+                                            <button
+                                                onClick={() => setValid(false)}
+                                                class="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-slate-800/90 p-2 text-slate-300 transition hover:bg-slate-700"
+                                                aria-label="Edit email"
+                                            >
+                                                <FaSolidPencil class="h-4 w-4" />
+                                            </button>
+                                        )}
                                     </div>
-                                    <input type="text" onKeyDown={(e) => validateEmail(e)} disabled={valid()} class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:text-gray-400" placeholder="user@cxmpute.com" />
-                                    {valid() && <div onClick={() => { setValid(false) }} class="text-gray-400 absolute end-2.5 bottom-3.5 text-xs cursor-pointer hover:text-red-500 transition-colors duration-300"><FaSolidPencil /></div>}
+                                </div>
+                                <div class={`overflow-hidden transition-all duration-300 ${valid() ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    {valid() && (
+                                        <div class="rounded-3xl border border-slate-700/80 bg-slate-950/90 p-5 text-slate-300">
+                                            <p class="text-sm text-cyan-300">Welcome to CXMPUTE!</p>
+                                            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                                                <A href="/vps" class="button-frost text-center">VPS Servers</A>
+                                                <A href="/minecraft" class="button-frost text-center">Game Servers</A>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                            <div class={`transition-all duration-300 overflow-hidden €{valid() ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                {valid() && (
-                                    <div>
-                                        <p class={'font-sans text-green-600 text-xs italic mt-1'}>Welcome to CXMPUTE!</p>
-                                        <div class={'grid grid-cols-2 gap-4 mt-3'}>
-                                            <a href={'/vps'}>
-                                                <Button>VPS Servers</Button>
-                                            </a>
-                                            <a href={'/minecraft'}>
-                                                <Button>Game Servers</Button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
                         </div>
                     </Box>
                 </div>
-            </div>
-            <div class={'grid place-items-center max-w-7xl m-auto mb-32'}>
+            </section>
 
-                <h1 class="text-5xl font-extrabold dark:text-white">Our Services<small class="ms-4 font-semibold text-gray-500 dark:text-gray-400">starting from <span class={'text-blue-500'}>€1.99/month</span> <FaSolidTurnDown class={'inline-flex'} /></small></h1>
-                <div class={'grid lg:grid-cols-3 gap-8 mt-12 w-full'}>
-                    <Box>
-                        <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">2025 sale</span>
-                        <div class={'w-full flex justify-center my-8'}>
-                            <img width="64" height="32" src="https://img.icons8.com/fluency/96/ps-controller.png" alt="ps-controller" />
-                            <p class={'my-auto ml-4 text-center text-4xl font-semibold font-sans'}>
-                                Gameservers
-                            </p>
+            <section class="mt-16 grid gap-8 lg:grid-cols-3">
+                <div class="glass-card p-8">
+                    <span class="inline-flex rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.35em] text-emerald-300">2025 sale</span>
+                    <div class="mt-8 flex items-center gap-4">
+                        <img width="56" height="56" src="https://img.icons8.com/fluency/96/ps-controller.png" alt="ps-controller" />
+                        <div>
+                            <p class="text-2xl font-semibold text-white">Gameservers</p>
+                            <p class="text-sm text-slate-400">Perfect for Minecraft™ and competitive communities with low latency and fast storage.</p>
                         </div>
-                        <p class={'px-8 mb-8'}>
-                            Whether you&apos;re looking to host a small Minecraft&trade; server or host the next major e-sports tournament, we have the performance and capacity
-                            to suit all needs. We have a wide catalog of games available to run, <span class={'font-bold'}>without any player or network limits.</span>
-                        </p>
-                        <div class={'absolute bottom-0 right-0 p-3'}>
-                            <A href={'/minecraft'}>
-                                <Button>From €1.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
-                            </A>
-                        </div>
-                    </Box>
-                    <Box hero>
-                        <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">2025 sale</span>
-                        <div class={'w-full flex justify-center my-8'}>
-                            <img width="64" height="64" src="https://img.icons8.com/fluency/96/database--v1.png" alt="database--v1" />
-                            <p class={'my-auto ml-4 text-center text-4xl font-semibold font-sans'}>
-                                VPS/Dedicated
-                            </p>
-                        </div>
-                        <p class={'px-8 mb-8'}>
-                            CXMPUTE also offers Virtual Private Server (VPS) or Dedicated Server options for users who need more horsepower and configurability. Starting from €5/monthly,
-                            our VPS lines run on specialised Ryzen&trade; hardware for peak performance.
-                        </p>
-                        <div class={'absolute bottom-0 right-0 p-3'}>
-                            <A href={'/vps'}>
-                                <Button>From €4.99/month<FaSolidArrowRight class={'ml-2'} /></Button>
-                            </A>
-                        </div>
-                    </Box>
-                    <Box>
-                        <span class="bg-blue-200 text-sm font-medium text-blue-800 text-center p-1 leading-none rounded-full px-2 dark:bg-blue-900 dark:text-blue-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Coming Soon</span>
-                        <div class={'w-full flex justify-center my-8'}>
-                            <img width="64" height="64" src="https://img.icons8.com/fluency/96/internet.png" alt="internet" />
-                            <p class={'my-auto ml-4 text-center text-4xl font-semibold font-sans'}>
-                                Web Hosting
-                            </p>
-                        </div>
-                        <p class={'px-8 mb-8'}>
-                            Use our custom web hosting dashboard to configure domains, deploy sites and manage your files in one easy-to-use UI, custom-built for our services. Migrate your files over from your old provider with ease, and get set up from €2/month on our Value plans.
-                        </p>
-                        <div class={'absolute bottom-0 right-0 p-3'}>
-                            <Button disabled>Launching 2025</Button>
-                        </div>
-                    </Box>
-                </div>
-            </div>
-            <div class={'flex justify-center items-center m-auto bg-gray-900'}>
-                <div class={'grid lg:grid-cols-3 gap-4 max-w-7xl'}>
-                    <div class={'lg:col-span-2 my-auto'}>
-                        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">An <mark class="px-2 text-white bg-blue-500 rounded-lg shadow-xl">All-New</mark> Experience</h1>
-                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">CXMPUTE uses an in-house management platform, <span class={'font-bold text-gray-300'}>CTRL</span>, to process orders, manage services and more. Our latest-generation platform supports a diverse range of applications - from VPS to gameservers, everything can be controlled in one neat, approachable UI.</p>
                     </div>
-                    <img src={OnePng} />
-                    <hr class={'lg:col-span-3 my-16'} />
-                    <img src={SpeedTestSvg} width={256} height={256} class={'mx-auto'} />
-                    <div class={'lg:col-span-2 my-auto'}>
-                        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Stellar Performance</h1>
-                        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Our cloud stack uses latest-generation chips from Intel&trade; and Ryzen&trade; along with NVMe SSD storage, Combahton DDoS Protection, 1gbps parallel networking and much more. Our Distributed Cloud Engine watches server performance in realtime and, if needed, can deploy extra "boost" cores and RAM to your servers in case of a spike in traffic. All free of charge, included in every plan.</p>
+                    <div class="mt-8 text-sm leading-7 text-slate-300">Whether you&apos;re launching a private server or tournament cluster, our infrastructure keeps every match smooth and responsive.</div>
+                    <div class="mt-8 text-right">
+                        <A href="/minecraft" class="button-frost inline-flex items-center justify-center px-5 py-3">From €1.99<FaSolidArrowRight class="ml-2" /></A>
                     </div>
                 </div>
-            </div>
-
-
-            <section class="bg-white dark:bg-gray-900 mt-12">
-                <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
-                    <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 mb-8">
-                        <div class="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-blue-400 mb-2">
-                            <FaSolidBookOpen class={'mr-1'} />
-                            Article
+                <div class="glass-card p-8 border-sky-400/30">
+                    <span class="inline-flex rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.35em] text-cyan-300">2025 sale</span>
+                    <div class="mt-8 flex items-center gap-4">
+                        <img width="56" height="56" src="https://img.icons8.com/fluency/96/database--v1.png" alt="database" />
+                        <div>
+                            <p class="text-2xl font-semibold text-white">VPS / Dedicated</p>
+                            <p class="text-sm text-slate-400">Flexible compute for apps, workflows, and enterprise services with premium network throughput.</p>
                         </div>
-                        <h1 class="text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-2">How do we compare to competitors?</h1>
-                        <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">Read our page on competitor comparison to see just how much value for money you can achieve by switching over to our services.</p>
-                        <A href={'/compare'}>
-                            <Button>Read More <FaSolidArrowRight class={'ml-2'} /></Button>
-                        </A>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
-                            <div class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 mb-2">
-                                <FaSolidCode class={'mr-1'} />
-                                Developers
-                            </div>
-                            <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Extensible By Design</h2>
-                            <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Our entire stack - from this website to our CTRL Panel API - is fully open to tinkerers and custom integrations from you and your business.</p>
+                    <div class="mt-8 text-sm leading-7 text-slate-300">From power-efficient Ryzen cores to burst-ready dedicated nodes, choose the build that matches your growth.</div>
+                    <div class="mt-8 text-right">
+                        <A href="/vps" class="button-frost inline-flex items-center justify-center px-5 py-3">From €4.99<FaSolidArrowRight class="ml-2" /></A>
+                    </div>
+                </div>
+                <div class="glass-card p-8">
+                    <span class="inline-flex rounded-full bg-sky-500/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.35em] text-sky-300">Coming soon</span>
+                    <div class="mt-8 flex items-center gap-4">
+                        <img width="56" height="56" src="https://img.icons8.com/fluency/96/internet.png" alt="internet" />
+                        <div>
+                            <p class="text-2xl font-semibold text-white">Web Hosting</p>
+                            <p class="text-sm text-slate-400">Make your site shine with our upcoming web hosting platform and modern deployment flow.</p>
                         </div>
-                        <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12">
-                            <div class="bg-purple-100 text-purple-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md dark:bg-gray-700 dark:text-purple-400 mb-2">
-                                <FaSolidLock class={'mr-1'} />
-                                Security
-                            </div>
-                            <h2 class="text-gray-900 dark:text-white text-3xl font-extrabold mb-2">Secure to the CXRE</h2>
-                            <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-4">Our CXRE framework is a physical and logical process to keeping customer and user data as secure as possible while maintaining efficiency and performance.</p>
+                    </div>
+                    <div class="mt-8 text-sm leading-7 text-slate-300">A polished dashboard, smart backups, and effortless domain control are coming soon at an introductory price.</div>
+                    <div class="mt-8 text-right">
+                        <button disabled class="button-frost secondary">Launching 2025</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mt-20 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] items-center">
+                <div class="space-y-8">
+                    <span class="inline-flex rounded-full bg-slate-800/80 px-4 py-2 text-xs uppercase tracking-[0.3em] text-sky-300">Platform highlight</span>
+                    <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">An all-new experience from order to control panel.</h2>
+                    <p class="max-w-2xl text-lg leading-8 text-slate-300">CXMPUTE is built around CTRL, our proprietary management interface. Every server, network, and billing option is designed to feel crisp, fast, and easy for both new users and seasoned operators.</p>
+                </div>
+                <div class="glass-card overflow-hidden">
+                    <img src={OnePng} alt="platform preview" class="h-full w-full object-cover" />
+                </div>
+            </section>
+
+            <section class="mt-16 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] items-center">
+                <div class="glass-card p-10">
+                    <span class="inline-flex rounded-full bg-cyan-500/15 px-4 py-2 text-xs uppercase tracking-[0.3em] text-cyan-300">Performance</span>
+                    <h3 class="mt-5 text-3xl font-extrabold text-white">Stellar performance under real load.</h3>
+                    <p class="mt-4 text-slate-300 leading-8">Our cloud stack uses the latest Intel™ and Ryzen™ hardware, NVMe SSD storage, advanced DDoS protection, and 1Gbps parallel networks. Every server tier includes live boost capacity for sudden traffic spikes.</p>
+                </div>
+                <div class="glass-card p-10 text-center">
+                    <img src={SpeedTestSvg} width={256} height={256} alt="performance diagram" class="mx-auto" />
+                </div>
+            </section>
+
+            <section class="mt-20 rounded-[2rem] bg-slate-900/80 p-8 shadow-[0_40px_120px_-60px_rgba(14,165,233,0.35)]">
+                <div class="grid gap-8 md:grid-cols-2">
+                    <div class="glass-panel p-8">
+                        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-emerald-300">
+                            <FaSolidCode /> Developers
                         </div>
+                        <h3 class="mt-5 text-3xl font-extrabold text-white">Extensible by design</h3>
+                        <p class="mt-4 text-slate-300 leading-8">Our stack, from this website to the CTRL API, is open for customization and integrations so your workflow can scale without friction.</p>
+                    </div>
+                    <div class="glass-panel p-8">
+                        <div class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-violet-300">
+                            <FaSolidLock /> Security
+                        </div>
+                        <h3 class="mt-5 text-3xl font-extrabold text-white">Secure to the CXRE</h3>
+                        <p class="mt-4 text-slate-300 leading-8">Our CXRE framework combines physical, network, and application-layer safeguards to protect your data while keeping performance responsive.</p>
                     </div>
                 </div>
             </section>
 
             {banner() && (
-                <div id="bottom-banner" tabindex="-1" class="fixed bottom-0 inset-x-0 z-50 flex justify-between w-full p-3 border-t border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                    <div class="flex items-center mx-auto">
-                        <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-                            <span class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center">
-                                <svg class="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M18.435 7.546A2.32 2.32 0 0 1 17.7 5.77a3.354 3.354 0 0 0-3.47-3.47 2.322 2.322 0 0 1-1.776-.736 3.357 3.357 0 0 0-4.907 0 2.281 2.281 0 0 1-1.776.736 3.414 3.414 0 0 0-2.489.981 3.372 3.372 0 0 0-.982 2.49 2.319 2.319 0 0 1-.736 1.775 3.36 3.36 0 0 0 0 4.908A2.317 2.317 0 0 1 2.3 14.23a3.356 3.356 0 0 0 3.47 3.47 2.318 2.318 0 0 1 1.777.737 3.36 3.36 0 0 0 4.907 0 2.36 2.36 0 0 1 1.776-.737 3.356 3.356 0 0 0 3.469-3.47 2.319 2.319 0 0 1 .736-1.775 3.359 3.359 0 0 0 0-4.908ZM8.5 5.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm3 9.063a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm2.207-6.856-6 6a1 1 0 0 1-1.414-1.414l6-6a1 1 0 0 1 1.414 1.414Z" />
-                                </svg>
-                            </span>
-                            <span>Our Standard and Performance VPS lines are now discounted. Offer ends 19 June.</span>
-                        </p>
+                <div id="bottom-banner" tabindex="-1" class="fixed bottom-0 inset-x-0 z-50 flex flex-col gap-4 border-t border-slate-800 bg-slate-950/95 p-4 text-slate-300 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-3 text-sm text-slate-300">
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-800/80 text-slate-200">
+                            <FaSolidCode class="h-4 w-4" />
+                        </span>
+                        <span>Standard and Performance VPS lines are discounted until 19 June.</span>
                     </div>
-                    <div class="flex items-center">
-                        <button onClick={() => setBanner(false)} data-dismiss-target="#bottom-banner" type="button" class="shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                            </svg>
-                        </button>
-                    </div>
+                    <button onClick={() => setBanner(false)} class="inline-flex items-center justify-center rounded-full bg-slate-800 px-4 py-2 text-sm text-slate-200 transition hover:bg-slate-700">Dismiss</button>
                 </div>
             )}
         </>

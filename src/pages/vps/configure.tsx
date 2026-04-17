@@ -1,195 +1,303 @@
-import { createSignal } from 'solid-js';
-import getVPSData, { VPSOptions, VPSTier } from '../../../data/vps.data';
-import classNames from 'classnames';
-import { Button } from '../../components/button';
-import { FaSolidArrowRight, FaSolidBoltLightning, FaSolidCheck, FaSolidEthernet, FaSolidHardDrive, FaSolidMemory, FaSolidMicrochip } from 'solid-icons/fa';
-import YourServerSvg from '../../assets/YourServer.svg';
+﻿import { Show, createMemo, createSignal } from "solid-js";
+import { FaSolidCheck, FaSolidCloud, FaSolidHardDrive, FaSolidMemory, FaSolidMicrochip, FaSolidShield, FaSolidWifi, FaSolidArrowLeft, FaSolidBoltLightning, FaSolidGauge } from "solid-icons/fa";
+import type { IconTypes } from "solid-icons";
+import { Button } from "../../components/button";
+import vpsPlans from "../../../data/vps.data";
 
-interface ConfiguratorOptions {
-    stage?: number;
-    location?: string;
-    tier?: VPSTier;
-    vps?: VPSOptions;
-}
+type VPSType = "standard" | "performance";
+type ResourceKey = "cpu" | "memory" | "storage" | "bandwidth";
+type ExtraKey = "backups" | "firewall";
+type ConfigKey = ResourceKey | ExtraKey;
+
+type Config = {
+  cpu: number;
+  memory: number;
+  storage: number;
+  bandwidth: number;
+  backups: boolean;
+  firewall: boolean;
+};
+
+const uniqueSorted = (values: number[]) => Array.from(new Set(values)).sort((a, b) => a - b);
+
+const getPlansByType = (type: VPSType) => vpsPlans.filter((plan) => plan.type === type);
+const cpuOptions = (type: VPSType) => uniqueSorted(getPlansByType(type).map((plan) => plan.vcpus));
+const memoryOptions = (type: VPSType, cpu: number) => uniqueSorted(getPlansByType(type).filter((plan) => plan.vcpus === cpu).map((plan) => plan.memory));
+const storageOptions = (type: VPSType, cpu: number, memory: number) => uniqueSorted(getPlansByType(type).filter((plan) => plan.vcpus === cpu && plan.memory === memory).map((plan) => plan.disk));
+const bandwidthOptions = (type: VPSType, cpu: number, memory: number, storage: number) => uniqueSorted(getPlansByType(type).filter((plan) => plan.vcpus === cpu && plan.memory === memory && plan.disk === storage).map((plan) => plan.traffic));
+
+const clamp = (value: number, values: number[]) => (values.includes(value) ? value : values[0]);
+
+const initialType: VPSType = "standard";
+const initialPlan = getPlansByType(initialType)[0];
+
+const resourceGroups: Array<{
+  title: string;
+  key: ResourceKey;
+  icon: IconTypes;
+  suffix: string;
+  getOptions: (type: VPSType, config: Config) => number[];
+}> = [
+  { title: "CPU", key: "cpu", icon: FaSolidMicrochip, suffix: "vCores", getOptions: (type) => cpuOptions(type) },
+  { title: "RAM", key: "memory", icon: FaSolidMemory, suffix: "GB", getOptions: (type, config) => memoryOptions(type, config.cpu) },
+  { title: "Storage", key: "storage", icon: FaSolidHardDrive, suffix: "GB", getOptions: (type, config) => storageOptions(type, config.cpu, config.memory) },
+  { title: "Bandwidth", key: "bandwidth", icon: FaSolidWifi, suffix: "TB", getOptions: (type, config) => bandwidthOptions(type, config.cpu, config.memory, config.storage) },
+];
+
+const extraOptions: Array<{ key: ExtraKey; label: string; description: string; icon: IconTypes }> = [
+  { key: "backups", label: "Daily Backups", description: "Daily snapshot restore points.", icon: FaSolidCloud },
+  { key: "firewall", label: "Managed Firewall", description: "Stronger network protection.", icon: FaSolidShield },
+];
+
+const planTypeDetails: Record<VPSType, { label: string; description: string; perks: string[] }> = {
+  standard: {
+    label: "Standard VPS",
+    description: "Balanced pricing with more memory and storage when compared to performance plans.",
+    perks: ["Better memory-to-price ratio", "Great for general purpose workloads", "Perfect for web hosting and development"],
+  },
+  performance: {
+    label: "Performance VPS",
+    description: "Higher CPU efficiency and throughput for latency-sensitive tasks.",
+    perks: ["Stronger single-threaded performance", "Ideal for game servers and databases", "Built for bursty compute workloads"],
+  },
+};
+
+const planTypes: VPSType[] = ["standard", "performance"];
 
 export default () => {
-    let plans: VPSOptions[] = [];
-    const data = getVPSData;
+  const [selectedType, setSelectedType] = createSignal<VPSType | null>(null);
+  const [selected, setSelected] = createSignal<Config>({
+    cpu: initialPlan.vcpus,
+    memory: initialPlan.memory,
+    storage: initialPlan.disk,
+    bandwidth: initialPlan.traffic,
+    backups: false,
+    firewall: false,
+  });
 
-    const [selected, setSelected] = createSignal<VPSOptions | undefined>();
-    const [options, setOptions] = createSignal<ConfiguratorOptions>({ stage: 1, location: 'germany', tier: 'standard' });
+  const normalize = (type: VPSType, next: Partial<Config>) => {
+    const current = { ...selected(), ...next };
+    const cpu = clamp(current.cpu, cpuOptions(type));
+    const memory = clamp(current.memory, memoryOptions(type, cpu));
+    const storage = clamp(current.storage, storageOptions(type, cpu, memory));
+    const bandwidth = clamp(current.bandwidth, bandwidthOptions(type, cpu, memory, storage));
+    return { ...current, cpu, memory, storage, bandwidth };
+  };
 
-    const refreshVPSOptions = () => {
-        plans = [];
+  const beginType = (type: VPSType) => {
+    const plan = getPlansByType(type)[0];
+    setSelectedType(type);
+    setSelected({ cpu: plan.vcpus, memory: plan.memory, storage: plan.disk, bandwidth: plan.traffic, backups: false, firewall: false });
+  };
 
-        data.forEach((vps) => {
-            if (vps.type === options().tier) {
-                plans.push(vps);
-            }
-        });
-    };
-
-    const redirect = () => {
-        // @ts-expect-error everything is fine.
-        window.location = selected().link;
+  const update = (key: ConfigKey, value: number | boolean) => {
+    const type = selectedType();
+    if (!type) return;
+    if (key === "cpu") {
+      setSelected(normalize(type, { cpu: value as number }));
+      return;
     }
+    if (key === "memory") {
+      setSelected(normalize(type, { memory: value as number }));
+      return;
+    }
+    if (key === "storage") {
+      setSelected(normalize(type, { storage: value as number }));
+      return;
+    }
+    setSelected((prev) => ({ ...prev, [key]: value }));
+  };
 
-    return (
-        <div class={'mt-32'} id={'configure_vps'}>
-            <p class={'text-5xl font-extrabold'}>VPS Configurator</p>
-            <p class={'text-xl text-gray-500 mb-8 mt-1'}>Choose a suitable VPS configuration for your needs.</p>
-            <ol class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-                <li class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-                    <span class="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500 cursor-pointer" onClick={() => setOptions((current) => ({ ...current, stage: 1 }))}>
-                        <span class="me-2">1</span>
-                        Location
-                    </span>
-                </li>
-                <li class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700">
-                    <span class={classNames(options().stage >= 2 && 'text-blue-500', "flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500 cursor-pointer")} onClick={() => setOptions((current) => ({ ...current, stage: 2 }))}>
-                        <span class="me-2">2</span>
-                        Tier
-                    </span>
-                </li>
-                <li class={classNames(options().stage >= 3 && 'text-blue-500', "flex items-center")}>
-                    <span class="me-2">3</span>
-                    Options
-                </li>
-            </ol>
-            <div class={'bg-black/50 p-6 rounded-lg shadow-xl mt-8'}>
-                {options().stage === 1 && (
-                    <>
-                        <div class={'grid lg:grid-cols-4 gap-8'}>
-                            <div class={classNames(options().location === 'uk' && 'border-2 border-blue-200', 'p-4 bg-gray-800 rounded-lg shadow-xl opacity-50')}>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/255px-Flag_of_the_United_Kingdom_%281-2%29.svg.png'} width={64} class={'rounded my-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>United Kingdom <span class={'font-normal text-gray-400 italic'}>EU</span></p>
-                                        <p class={'text-yellow-200'}>Out of Stock</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class={classNames(options().location === 'germany' && 'border-2 border-blue-200', 'p-4 bg-gray-800 rounded-lg shadow-xl')}>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/255px-Flag_of_Germany.svg.png'} width={64} class={'rounded my-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>Germany <span class={'font-normal text-gray-400 italic'}>EU</span></p>
-                                        <p class={'text-green-200'}>Available Now</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class={classNames(options().location === 'usa' && 'border-2 border-blue-200', 'p-4 bg-gray-800 rounded-lg shadow-xl opacity-50')}>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/255px-Flag_of_the_United_States_%28Pantone%29.svg.png'} width={64} class={'rounded my-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>Texas <span class={'font-normal text-gray-400 italic'}>NA</span></p>
-                                        <p class={'text-yellow-200'}>Out of Stock</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class={classNames(options().location === 'usa' && 'border-2 border-blue-200', 'p-4 bg-gray-800 rounded-lg shadow-xl opacity-50')}>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/255px-Flag_of_the_United_States_%28Pantone%29.svg.png'} width={64} class={'rounded my-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>New York <span class={'font-normal text-gray-400 italic'}>NA</span></p>
-                                        <p class={'text-yellow-200'}>Unavailable</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class={'mt-4 text-right'} onClick={() => setOptions((current) => ({ ...current, stage: 2 }))}>
-                            <Button>Next Step <FaSolidArrowRight class={'ml-2'} /></Button>
-                        </div>
-                    </>
-                )}
-                {options().stage == 2 && (
-                    <>
-                        <div class={'grid lg:grid-cols-2 gap-8'}>
-                            <div class={classNames(options().tier === 'standard' && 'border-2 border-blue-200', 'relative p-4 bg-gray-800 rounded-lg shadow-xl')} onClick={() => setOptions((current) => ({ ...current, tier: 'standard' }))}>
-                                <span class="bg-green-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-green-900 dark:text-green-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Best Value</span>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Intel_Xeon_2020_logo.svg/1200px-Intel_Xeon_2020_logo.svg.png'} width={64} class={'rounded m-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>Standard Performance</p>
-                                        <p class={'text-blue-200'}>Starting from €4.99/mo</p>
-                                        <p class={'text-gray-400 text-sm'}>Suitable for typical workloads.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class={classNames(options().tier === 'performance' && 'border-2 border-blue-200', 'relative p-4 bg-gray-800 rounded-lg shadow-xl')} onClick={() => setOptions((current) => ({ ...current, tier: 'performance' }))}>
-                                <span class="bg-yellow-200 text-sm font-medium text-center p-1 leading-none rounded-full px-2 dark:bg-yellow-900 dark:text-yellow-200 absolute -translate-y-1/2 translate-x-1/3 left-auto top-0 right-0">Best Power</span>
-                                <div class={'grid grid-cols-3 gap-4'}>
-                                    <img src={'https://neoxcomputers.co.uk/cdn/shop/files/ryzen-5-box.webp?v=1731243790&width=400'} width={64} class={'rounded m-auto'} />
-                                    <div class={'col-span-2'}>
-                                        <p class={'font-bold'}>High Performance <FaSolidBoltLightning class={'text-yellow-500 inline-flex'} /></p>
-                                        <p class={'text-blue-200'}>Starting from €4.99/mo</p>
-                                        <p class={'text-gray-400 text-sm'}>Ideal for more demanding workloads.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class={'mt-4 text-right'} onClick={() => setOptions((current) => ({ ...current, stage: 3 }))}>
-                            <Button>Next Step <FaSolidArrowRight class={'ml-2'} /></Button>
-                        </div>
-                    </>
-                )}
-                {options().stage === 3 && (
-                    <>
-                        {refreshVPSOptions()}
-                        {plans.length < 1 ? <>No configurations can be found for the selected options.</> : (
-                            <>
-                                <span class={'hidden'}>{setSelected(plans[0]) as unknown as Element}</span>
-                                <div class="relative mb-6">
-                                    <input id="medium-range" min="0" max={plans.length - 1} onInput={(e) => { setSelected(plans[Number(e.currentTarget.value)]) }} type="range" value={0} class="w-full h-2 mb-6 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
-                                    <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">{plans[0].memory}GB RAM</span>
-                                    <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">{plans[plans.length - 1].memory}GB RAM</span>
-                                </div>
-                                <div class={'grid lg:grid-cols-2 gap-12 place-items-center'}>
-                                    <img src={YourServerSvg} class={'hidden md:block p-12'} width={512} height={512} />
-                                    <div class={'text-white font-semibold text-lg bg-black/25 p-4 lg:p-12 rounded-lg shadow-xl'}>
-                                        <h1 class={'text-xl lg:text-4xl font-bold'}>Your Server ({selected()?.name ?? 'unknown'})</h1>
-                                        <div class={'text-gray-400 mt-4'}>
-                                            <p class={'mb-1'}>
-                                                <FaSolidMicrochip class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>{selected().vcpus} vCores</span> on {selected().type === 'standard' ? 'Intel Xeon Standard CPU' : 'AMD Ryzen Performance CPU'}
-                                            </p>
-                                            <p class={'my-1'}>
-                                                <FaSolidMemory class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>{selected().memory}GB</span> DDR4 ECC dedicated memory
-                                            </p>
-                                            <p class={'my-1'}>
-                                                <FaSolidHardDrive class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>{selected().disk}GB</span> {selected().type === 'standard' ? 'SATA' : 'NVMe'} SSD Storage
-                                            </p>
-                                            <p>
-                                                <FaSolidEthernet class={'mb-1 mr-2 inline-flex'} /><span class={'text-blue-500'}>{selected().traffic}TB</span> DDoS-protected Traffic
-                                            </p>
-                                            <hr class={'my-6'} />
-                                            <p>
-                                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 99.5% SLA Uptime
-                                            </p>
-                                            <p class={'my-1'}>
-                                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> DDoS Protection from SmartMitigate&trade;
-                                            </p>
-                                            <p class={'my-1'}>
-                                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Custom Control Panel
-                                            </p>
-                                            <p class={'my-1'}>
-                                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> 1000mbps Parallel Network
-                                            </p>
-                                            <p>
-                                                <FaSolidCheck class={'mb-1 mr-2 inline-flex text-blue-500'} /> Automated System Backups
-                                            </p>
-                                        </div>
-                                        <h1 class={'text-xl lg:text-3xl font-bold mt-4 lg:mt-8'}>€{selected().price}/month</h1>
-                                        <p class={'italic text-gray-400 text-sm font-normal'}>30-day payment. Cancel anytime, no fees, no contract.</p>
-                                        <div class={'text-right mt-4'}>
-                                            <Button onClick={redirect}>Order Now</Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </>
-                )}
+  const matchedPlan = createMemo(() => {
+    const type = selectedType();
+    if (!type) return null;
+    const config = selected();
+    return getPlansByType(type).find((plan) =>
+      plan.vcpus === config.cpu &&
+      plan.memory === config.memory &&
+      plan.disk === config.storage &&
+      plan.traffic === config.bandwidth
+    ) ?? getPlansByType(type).find((plan) =>
+      plan.vcpus === config.cpu &&
+      plan.memory === config.memory &&
+      plan.disk === config.storage
+    ) ?? getPlansByType(type).find((plan) =>
+      plan.vcpus === config.cpu &&
+      plan.memory === config.memory
+    ) ?? getPlansByType(type).find((plan) => plan.vcpus === config.cpu) ?? getPlansByType(type)[0];
+  });
+
+  const estimatedProfile = createMemo(() => {
+    const cpu = selected().cpu;
+    if (cpu <= 1) return "Starter site";
+    if (cpu <= 4) return "Small production";
+    if (cpu <= 6) return "Growing service";
+    return "High-performance";
+  });
+
+  return (
+    <section class="space-y-10">
+      <div class="space-y-4">
+        <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">VPS configurator</p>
+        <h2 class="text-4xl font-extrabold text-white">Choose your plan family first</h2>
+        <p class="max-w-3xl text-slate-300 text-lg leading-8">Standard and Performance VPS plans are different products. Pick a product line, then configure only the options available for that family.</p>
+      </div>
+
+      <Show when={selectedType()} fallback={
+        <div class="grid gap-8 xl:grid-cols-2">
+          {planTypes.map((type) => (
+            <div class="glass-card rounded-[2rem] border border-slate-800/90 bg-slate-950/90 p-8 shadow-xl shadow-slate-950/20">
+              <div class="flex items-center gap-3">
+                <div class="rounded-3xl bg-cyan-500/10 p-3 text-cyan-300">
+                  {type === "standard" ? <FaSolidGauge class="h-6 w-6" /> : <FaSolidBoltLightning class="h-6 w-6" />}
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-[0.35em] text-cyan-300">{planTypeDetails[type].label}</p>
+                  <h3 class="mt-3 text-2xl font-semibold text-white">{planTypeDetails[type].description}</h3>
+                </div>
+              </div>
+              <ul class="mt-8 space-y-4 text-slate-300">
+                {planTypeDetails[type].perks.map((perk) => (
+                  <li class="flex items-start gap-3">
+                    <FaSolidCheck class="mt-1 h-5 w-5 text-emerald-400" />
+                    <span>{perk}</span>
+                  </li>
+                ))}
+              </ul>
+              <button type="button" class="button-frost mt-8 w-full" onClick={() => beginType(type)}>{type === "standard" ? "Start with Standard" : "Start with Performance"}</button>
             </div>
+          ))}
         </div>
-    )
-}
+      }>
+        <div class="space-y-10">
+          <div class="glass-card rounded-[2rem] border border-slate-800/90 bg-slate-950/90 p-8 shadow-xl shadow-slate-950/20">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">{planTypeDetails[selectedType()!].label}</p>
+                <h3 class="mt-2 text-3xl font-semibold text-white">Configure your {planTypeDetails[selectedType()!].label}</h3>
+                <p class="mt-3 text-slate-400">Only options from the {selectedType()} catalog are available here.</p>
+              </div>
+              <button type="button" class="button-frost secondary inline-flex items-center gap-2" onClick={() => setSelectedType(null)}><FaSolidArrowLeft /> Change plan type</button>
+            </div>
+          </div>
+
+          <div class="grid gap-8 lg:grid-cols-[1.4fr_0.9fr]">
+            <div class="space-y-8">
+              <div class="glass-panel p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Step 1</p>
+                    <h3 class="mt-2 text-2xl font-semibold text-white">Choose valid resources only</h3>
+                  </div>
+                  <div class="rounded-full border border-slate-800 px-4 py-2 text-sm text-slate-300">Profile: {estimatedProfile()}</div>
+                </div>
+                <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                  {resourceGroups.map((group) => {
+                    const options = group.getOptions(selectedType()!, selected());
+                    return (
+                      <div class="rounded-[2rem] border border-slate-800/80 bg-slate-950/90 p-6">
+                        <div class="flex items-center gap-3 text-slate-300">
+                          <group.icon class="h-5 w-5 text-cyan-300" />
+                          <div>
+                            <p class="text-sm uppercase tracking-[0.35em]">{group.title}</p>
+                            <p class="mt-2 text-sm text-slate-400">Only catalog-supported values are shown.</p>
+                          </div>
+                        </div>
+                        <div class="mt-6 grid gap-3">
+                          {options.map((option) => (
+                            <button
+                              class={`w-full rounded-3xl border px-5 py-4 text-left text-sm transition duration-300 ${selected()[group.key] === option ? 'border-cyan-400 bg-slate-900 text-white shadow-lg shadow-cyan-500/10' : 'border-slate-800 bg-slate-950 text-slate-300 hover:border-cyan-400 hover:bg-slate-900/80'}`}
+                              onClick={() => update(group.key, option)}
+                            >
+                              <div class="flex items-center justify-between gap-4">
+                                <p class="font-semibold">{option} {group.suffix}</p>
+                                {selected()[group.key] === option && <FaSolidCheck class="h-5 w-5 text-cyan-400" />}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div class="glass-panel p-8">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300">2</span>
+                  <div>
+                    <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Step 2</p>
+                    <h3 class="mt-2 text-2xl font-semibold text-white">Optional enhancements</h3>
+                  </div>
+                </div>
+                <p class="mt-4 text-slate-400">These extras are add-ons and do not affect the base catalog match.</p>
+                <div class="mt-8 space-y-4">
+                  {extraOptions.map((option) => (
+                    <button
+                      class={`w-full rounded-[2rem] border px-5 py-5 text-left transition duration-300 ${selected()[option.key] ? 'border-cyan-400 bg-slate-900 shadow-lg shadow-cyan-500/10 text-white' : 'border-slate-800 bg-slate-950 text-slate-300 hover:border-cyan-400 hover:bg-slate-900/80'}`}
+                      onClick={() => update(option.key, !selected()[option.key])}
+                    >
+                      <div class="flex items-start gap-4">
+                        <option.icon class="mt-1 h-6 w-6 text-cyan-300" />
+                        <div>
+                          <div class="flex items-center justify-between gap-4">
+                            <p class="text-lg font-semibold">{option.label}</p>
+                            <span class="text-sm text-slate-400">Optional</span>
+                          </div>
+                          <p class="mt-2 text-sm text-slate-400">{option.description}</p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <aside class="glass-card sticky top-10 space-y-6 p-8">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                  <div class="h-12 w-12 rounded-3xl bg-cyan-500/10 text-cyan-300 flex items-center justify-center text-xl">€</div>
+                  <div>
+                    <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Catalog match</p>
+                    <p class="text-3xl font-extrabold text-white">€{matchedPlan()!.price.toFixed(2)}/month</p>
+                  </div>
+                </div>
+                <p class="text-sm text-slate-400">This is the exact plan that supports your selected configuration.</p>
+              </div>
+
+              <div class="grid gap-3">
+                {[
+                  { label: "CPU", value: `${selected().cpu} vCores`, icon: FaSolidMicrochip },
+                  { label: "Memory", value: `${selected().memory}GB`, icon: FaSolidMemory },
+                  { label: "Storage", value: `${selected().storage}GB`, icon: FaSolidHardDrive },
+                  { label: "Network", value: `${selected().bandwidth}TB`, icon: FaSolidWifi },
+                ].map((item) => (
+                  <div class="rounded-3xl border border-slate-800/80 bg-slate-950/80 p-4 flex items-center gap-3">
+                    <item.icon class="h-5 w-5 text-cyan-300" />
+                    <div>
+                      <p class="text-sm text-slate-400">{item.label}</p>
+                      <p class="text-base font-semibold text-white">{item.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div class="rounded-[2rem] border border-slate-800/80 bg-slate-950/85 p-6">
+                <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Selected plan</p>
+                <p class="mt-3 font-semibold text-white">{matchedPlan()!.name}</p>
+                <p class="mt-2 text-sm text-slate-400">{matchedPlan()!.vcpus} vCore, {matchedPlan()!.memory}GB RAM, {matchedPlan()!.disk}GB NVMe, {matchedPlan()!.traffic}TB traffic</p>
+              </div>
+
+              <Button onClick={() => { window.location.href = matchedPlan()!.link; }} class="w-full">Order {matchedPlan()!.name}</Button>
+
+              <div class="rounded-3xl border border-slate-800/80 bg-slate-950/80 p-5 text-sm text-slate-300">
+                <p class="font-semibold text-white">Optional add-ons</p>
+                <p class="mt-2">Backup and firewall options appear here for convenience and are quoted separately at checkout.</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </Show>
+    </section>
+  );
+};

@@ -7,11 +7,11 @@ interface Props {
 }
 
 export default (props: Props) => (
-    <div class={'bg-blue-950/50 p-6 rounded-lg shadow-xl text-gray-400'}>
-        <p class={'font-bold text-xl text-white mb-4'}>
-            <props.icon class={'mr-2 inline-flex text-blue-500'} />
+    <div class="glass-panel p-6 text-slate-200">
+        <p class="mb-5 flex items-center text-xl font-bold text-white">
+            <props.icon class="mr-3 text-cyan-400" />
             {props.title}
         </p>
-        {props.children}
+        <p class="leading-7 text-slate-300">{props.children}</p>
     </div>
 );

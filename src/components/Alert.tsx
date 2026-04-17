@@ -11,18 +11,18 @@ export default ({ type, className, children }: AlertProps) => {
     return (
         <div
             class={classNames(
-                'flex items-center border-l-8 text-gray-50 rounded-md shadow px-4 py-3',
+                'glass-panel flex items-start gap-4 rounded-[1.75rem] border px-5 py-4 text-slate-100 shadow-lg shadow-slate-950/20',
                 {
-                    ['border-green-500 bg-green-500/25']: type === 'success',
-                    ['border-blue-500 bg-blue-500/25']: type === 'info',
-                    ['border-yellow-500 bg-yellow-500/25']: type === 'warning',
-                    ['border-red-500 bg-red-500/25']: type === 'danger',
+                    ['border-emerald-500/30 bg-emerald-500/10']: type === 'success',
+                    ['border-sky-500/30 bg-sky-500/10']: type === 'info',
+                    ['border-amber-500/30 bg-amber-500/10']: type === 'warning',
+                    ['border-rose-500/30 bg-rose-500/10']: type === 'danger',
                 },
                 className,
             )}
         >
-            <FaSolidCircleInfo class={'mt-1 mr-2'} />
-            {children}
+            <FaSolidCircleInfo class='mt-1 h-5 w-5 text-current' />
+            <div class='text-sm leading-7 text-slate-200'>{children}</div>
         </div>
     );
 };
